@@ -12,6 +12,10 @@
 		3EFFCCCA20A46F0E00457517 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EFFCCC820A46F0E00457517 /* LaunchScreen.storyboard */; };
 		3EFFCCFC20A4751A00457517 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFFCCFA20A4751A00457517 /* MainViewController.swift */; };
 		3EFFCCFD20A4751A00457517 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EFFCCFB20A4751A00457517 /* MainViewController.xib */; };
+		3EFFCD0020A47C0B00457517 /* PlaybackControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFFCCFF20A47C0B00457517 /* PlaybackControllerView.swift */; };
+		3EFFCD0220A47C5C00457517 /* PlaybackControllerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3EFFCD0120A47C5C00457517 /* PlaybackControllerView.xib */; };
+		3EFFCD0520A47CC900457517 /* UIView + identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFFCD0420A47CC900457517 /* UIView + identifier.swift */; };
+		3EFFCD0720A4964D00457517 /* CMTime + toDisplayString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFFCD0620A4964D00457517 /* CMTime + toDisplayString.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +26,10 @@
 		3EFFCCCB20A46F0E00457517 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3EFFCCFA20A4751A00457517 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		3EFFCCFB20A4751A00457517 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
+		3EFFCCFF20A47C0B00457517 /* PlaybackControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControllerView.swift; sourceTree = "<group>"; };
+		3EFFCD0120A47C5C00457517 /* PlaybackControllerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlaybackControllerView.xib; sourceTree = "<group>"; };
+		3EFFCD0420A47CC900457517 /* UIView + identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + identifier.swift"; sourceTree = "<group>"; };
+		3EFFCD0620A4964D00457517 /* CMTime + toDisplayString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CMTime + toDisplayString.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +62,8 @@
 		3EFFCCBE20A46F0D00457517 /* GestureVideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				3EFFCD0320A47CAD00457517 /* Extensions */,
+				3EFFCCFE20A47BEC00457517 /* Views */,
 				3EFFCCF920A4750F00457517 /* ViewControllers */,
 				3EFFCCBF20A46F0D00457517 /* AppDelegate.swift */,
 				3EFFCCC620A46F0E00457517 /* Assets.xcassets */,
@@ -70,6 +80,24 @@
 				3EFFCCFB20A4751A00457517 /* MainViewController.xib */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		3EFFCCFE20A47BEC00457517 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3EFFCCFF20A47C0B00457517 /* PlaybackControllerView.swift */,
+				3EFFCD0120A47C5C00457517 /* PlaybackControllerView.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3EFFCD0320A47CAD00457517 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3EFFCD0420A47CC900457517 /* UIView + identifier.swift */,
+				3EFFCD0620A4964D00457517 /* CMTime + toDisplayString.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -133,6 +161,7 @@
 				3EFFCCCA20A46F0E00457517 /* LaunchScreen.storyboard in Resources */,
 				3EFFCCFD20A4751A00457517 /* MainViewController.xib in Resources */,
 				3EFFCCC720A46F0E00457517 /* Assets.xcassets in Resources */,
+				3EFFCD0220A47C5C00457517 /* PlaybackControllerView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,7 +173,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3EFFCCC020A46F0D00457517 /* AppDelegate.swift in Sources */,
+				3EFFCD0720A4964D00457517 /* CMTime + toDisplayString.swift in Sources */,
 				3EFFCCFC20A4751A00457517 /* MainViewController.swift in Sources */,
+				3EFFCD0020A47C0B00457517 /* PlaybackControllerView.swift in Sources */,
+				3EFFCD0520A47CC900457517 /* UIView + identifier.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
