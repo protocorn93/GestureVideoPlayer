@@ -1,5 +1,5 @@
 
-# Created by https://www.gitignore.io/api/git,xcode,macos,swift,cocoapods
+# Created by https://www.gitignore.io/api/xcode,macos,swift,cocoapods
 
 ### CocoaPods ###
 ## CocoaPods GitIgnore Template
@@ -8,9 +8,6 @@
 #           - Also handy if you have a large number of dependant pods
 #           - AS PER https://guides.cocoapods.org/using/using-cocoapods.html NEVER IGNORE THE LOCK FILE
 Pods/
-
-### Git ###
-*.orig
 
 ### macOS ###
 *.DS_Store
@@ -116,4 +113,4 @@ fastlane/test_output
 /*.gcno
 
 
-# End of https://www.gitignore.io/api/git,xcode,macos,swift,cocoapods
+# End of https://www.gitignore.io/api/xcode,macos,swift,cocoapods
