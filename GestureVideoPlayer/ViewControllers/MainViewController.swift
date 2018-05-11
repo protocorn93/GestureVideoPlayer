@@ -11,6 +11,7 @@ import AVKit
 
 class MainViewController: UIViewController {
     
+    //MARK: Properties
     var player: AVPlayer!
     var asset:AVAsset!
     var playerItem: AVPlayerItem!
@@ -18,18 +19,23 @@ class MainViewController: UIViewController {
     var playbackControllerView: PlaybackControllerView = PlaybackControllerView.initFromNib()
     private var playerItemContext = 0 // Key-value observing context
     let requiredAssetKeys = ["playable", "hasProtectedContent"]
-    
+    var showAnimation:UIViewPropertyAnimator!
+    var hideAnimation:UIViewPropertyAnimator!
+    var toBeHide:Bool = true
+    //MARK: Outlets
     @IBOutlet weak var containerView: UIView!
+    //MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPlayer()
+        initailizeAnimation()
+        setupGesture()
     }
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         playerLayer.frame = containerView.frame // because sublayers were not resizing autumatically
     }
-    
+    //MARK: AVPlayer
     fileprivate func setupPlayer(){
         guard let url = URL(string: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4") else {return}
         asset = AVAsset(url: url)
@@ -41,7 +47,7 @@ class MainViewController: UIViewController {
         playerLayer = AVPlayerLayer(player: player)
         playerLayer.videoGravity = .resize
         containerView.layer.addSublayer(playerLayer)
-        
+
         //setup Playback Controller view
         setupPlaybackControllerView()
         //observe playback timeline
@@ -68,7 +74,28 @@ extension MainViewController: PlaybackControllerViewDelegate {
         playbackControllerView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         playbackControllerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
     }
+    
+    func playbackControllerView(valueDidChange slider: UISlider) {
+        let percentage = slider.value
+        guard let duration = player.currentItem?.duration else {return}
+        let durationInSeconds = CMTimeGetSeconds(duration)
+        let seekTimeInSeconds = Float64(percentage) * durationInSeconds
+        let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, Int32(NSEC_PER_SEC))
+        if slider.isTracking {
+            hideAnimation.stopAnimation(true)
+            showAnimation.stopAnimation(true)
+            return
+        }
+        player.seek(to: seekTime) { (_) in
+            self.initailizeAnimation()
+            self.hideAnimation.startAnimation(afterDelay: 3)
+        }
+    }
+    
     func playbackControllerView(toBePlay: Bool) {
+        hideAnimation.stopAnimation(true)
+        initailizeAnimation()
+        showAnimation.startAnimation()
         if toBePlay {
             player.play()
         }else{
@@ -98,11 +125,11 @@ extension MainViewController {
                 print("ready to play item")
                 player.play()
                 playbackControllerView.playPauseButton.isSelected = true
+                hideAnimation.startAnimation(afterDelay: 3)
                 break
             case .failed:
                 break
             case .unknown:
-                // will show indicator View
                 break
             }
         }

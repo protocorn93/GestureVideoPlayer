@@ -11,6 +11,7 @@ import AVKit
 
 protocol PlaybackControllerViewDelegate: class {
     func playbackControllerView(toBePlay: Bool)
+    func playbackControllerView(valueDidChange slider: UISlider)
 }
 
 class PlaybackControllerView: UIView {
@@ -37,11 +38,12 @@ class PlaybackControllerView: UIView {
     }
     //MARK: Properties
     var isLandscapeMode:Bool = false
-    var delegate: PlaybackControllerViewDelegate?
+    var isHiding:Bool = false
+    weak var delegate: PlaybackControllerViewDelegate?
     //MARK: Life cycle
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+        playbackSlider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
     }
     //MARK: Initializer
     static func initFromNib()->PlaybackControllerView {
@@ -57,6 +59,9 @@ class PlaybackControllerView: UIView {
         }
     }
     //MARK: IBAction
+    @objc func sliderValueChanged(_ sender: UISlider) {
+        delegate?.playbackControllerView(valueDidChange: sender)
+    }
     @IBAction func playPauseButtonTapped(_ sender: Any) {
         let isSelected = !playPauseButton.isSelected
         playPauseButton.isSelected = isSelected
