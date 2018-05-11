@@ -26,6 +26,7 @@
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="Twv-db-Pqn" secondAttribute="height" multiplier="1:1" id="sV4-Ng-aAJ"/>
                             </constraints>
+                            <color key="tintColor" red="0.0" green="0.98039215690000003" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <state key="normal" image="play"/>
                             <connections>
                                 <action selector="playPauseButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="fmK-le-Gqa"/>
@@ -45,7 +46,7 @@
                                         <constraint firstAttribute="width" constant="33" id="HYd-to-y8F"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                    <color key="textColor" red="0.0" green="0.98106676339999999" blue="0.57369142770000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="textColor" red="0.0" green="0.98039215686274506" blue="0.5725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="|" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cuh-Pp-Y3D">

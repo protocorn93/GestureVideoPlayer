@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E22946E20A592DB0068D3AE /* MainViewController + Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E22946D20A592DB0068D3AE /* MainViewController + Gesture.swift */; };
 		3EFFCCC020A46F0D00457517 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFFCCBF20A46F0D00457517 /* AppDelegate.swift */; };
 		3EFFCCC720A46F0E00457517 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3EFFCCC620A46F0E00457517 /* Assets.xcassets */; };
 		3EFFCCCA20A46F0E00457517 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3EFFCCC820A46F0E00457517 /* LaunchScreen.storyboard */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3E22946D20A592DB0068D3AE /* MainViewController + Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController + Gesture.swift"; sourceTree = "<group>"; };
 		3EFFCCBC20A46F0D00457517 /* GestureVideoPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GestureVideoPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3EFFCCBF20A46F0D00457517 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3EFFCCC620A46F0E00457517 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			children = (
 				3EFFCCFA20A4751A00457517 /* MainViewController.swift */,
 				3EFFCCFB20A4751A00457517 /* MainViewController.xib */,
+				3E22946D20A592DB0068D3AE /* MainViewController + Gesture.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -177,6 +180,7 @@
 				3EFFCCFC20A4751A00457517 /* MainViewController.swift in Sources */,
 				3EFFCD0020A47C0B00457517 /* PlaybackControllerView.swift in Sources */,
 				3EFFCD0520A47CC900457517 /* UIView + identifier.swift in Sources */,
+				3E22946E20A592DB0068D3AE /* MainViewController + Gesture.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
