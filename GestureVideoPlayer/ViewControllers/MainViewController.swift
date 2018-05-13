@@ -27,16 +27,30 @@ class MainViewController: UIViewController {
     var prePanLocation:CGPoint!
     var currentPanLocation:CGPoint!
     var volumeIndicatorViewHeightConstraint:NSLayoutConstraint!
+    var brightnessIndicatorViewHeightConstraint:NSLayoutConstraint!
     let audioSession = AVAudioSession.sharedInstance()
     var isPanDragging:Bool = false
     //MARK: Outlets
     @IBOutlet weak var containerView: UIView!
+    var panGestureArea: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     var volumeView: MPVolumeView = {
         let view = MPVolumeView(frame: .zero)
         view.isHidden = true
         return view
     }()
     let volumeIndicatorView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.green
+        view.alpha = 0
+        return view
+    }()
+    let brightnessIndicatorView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = UIColor.green
@@ -54,6 +68,7 @@ class MainViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         playerLayer.frame = containerView.frame // because sublayers were not resizing autumatically
+        panGestureArea.frame = playbackControllerView.panGestureArea.frame
     }
     //MARK: AVPlayer
     fileprivate func setupPlayer(){
@@ -85,6 +100,7 @@ class MainViewController: UIViewController {
 //MARK:- PlaybackControllerViewDelegate
 extension MainViewController: PlaybackControllerViewDelegate {
     fileprivate func setupPlaybackControllerView(){
+        self.containerView.addSubview(panGestureArea)
         //Setup PlaybackControllerView
         playbackControllerView.delegate = self
         playbackControllerView.translatesAutoresizingMaskIntoConstraints = false
@@ -99,9 +115,17 @@ extension MainViewController: PlaybackControllerViewDelegate {
         volumeIndicatorView.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor).isActive = true
         volumeIndicatorView.widthAnchor.constraint(equalTo: self.containerView.widthAnchor, multiplier: 0.5).isActive = true
         volumeIndicatorView.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor).isActive = true
-        let currentVolume = AVAudioSession.sharedInstance().outputVolume
+        let currentVolume = audioSession.outputVolume
         volumeIndicatorViewHeightConstraint = volumeIndicatorView.heightAnchor.constraint(equalToConstant: CGFloat(currentVolume) * self.containerView.frame.height)
         volumeIndicatorViewHeightConstraint.isActive = true
+        
+        self.containerView.addSubview(brightnessIndicatorView)
+        brightnessIndicatorView.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor).isActive = true
+        brightnessIndicatorView.widthAnchor.constraint(equalTo: self.containerView.widthAnchor, multiplier: 0.5).isActive = true
+        brightnessIndicatorView.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor).isActive = true
+        
+        brightnessIndicatorViewHeightConstraint = brightnessIndicatorView.heightAnchor.constraint(equalToConstant: UIScreen.main.brightness * self.containerView.frame.height)
+        brightnessIndicatorViewHeightConstraint.isActive = true
     }
     
     func playbackControllerView(valueDidChange slider: UISlider) {
@@ -113,6 +137,7 @@ extension MainViewController: PlaybackControllerViewDelegate {
         if slider.isTracking {
             hideAnimation.stopAnimation(true)
             showAnimation.stopAnimation(true)
+            playbackControllerView.alpha = 1
             return
         }
         player.seek(to: seekTime) { (_) in
