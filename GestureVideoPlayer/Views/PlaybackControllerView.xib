@@ -6,7 +6,9 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Baseline standard spacing" minToolsVersion="9.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,22 +20,9 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="232"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="Ts5-ss-4Si">
-                    <rect key="frame" x="169.5" y="97.5" width="37" height="37"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Twv-db-Pqn">
-                            <rect key="frame" x="0.0" y="0.0" width="37" height="37"/>
-                            <constraints>
-                                <constraint firstAttribute="width" secondItem="Twv-db-Pqn" secondAttribute="height" multiplier="1:1" id="sV4-Ng-aAJ"/>
-                            </constraints>
-                            <color key="tintColor" red="0.0" green="0.98039215690000003" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <state key="normal" image="play"/>
-                            <connections>
-                                <action selector="playPauseButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="fmK-le-Gqa"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                </stackView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7t-n3-UbM">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="191.5"/>
+                </view>
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="qkS-04-TAa">
                     <rect key="frame" x="257" y="204" width="110" height="20"/>
                     <subviews>
@@ -84,6 +73,22 @@
                     <color key="minimumTrackTintColor" red="0.0" green="0.98106676339999999" blue="0.57369142770000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="maximumTrackTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </slider>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="Ts5-ss-4Si">
+                    <rect key="frame" x="169" y="97" width="37" height="37"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Twv-db-Pqn">
+                            <rect key="frame" x="0.0" y="0.0" width="37" height="37"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="Twv-db-Pqn" secondAttribute="height" multiplier="1:1" id="sV4-Ng-aAJ"/>
+                            </constraints>
+                            <color key="tintColor" red="0.0" green="0.98039215690000003" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <state key="normal" image="play"/>
+                            <connections>
+                                <action selector="playPauseButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="fmK-le-Gqa"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
@@ -92,8 +97,12 @@
                 <constraint firstItem="qkS-04-TAa" firstAttribute="leading" secondItem="Qm7-Vi-qOB" secondAttribute="trailing" constant="16" id="7b5-5X-Ve0"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="qkS-04-TAa" secondAttribute="trailing" constant="8" id="ELu-pr-QYd"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="qkS-04-TAa" secondAttribute="bottom" constant="8" id="KYj-Dj-SgV"/>
+                <constraint firstItem="Q7t-n3-UbM" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="NlC-To-ye3"/>
+                <constraint firstItem="Q7t-n3-UbM" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="cD0-Ns-yuC"/>
                 <constraint firstItem="Ts5-ss-4Si" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="pt0-MB-6XD"/>
+                <constraint firstItem="Qm7-Vi-qOB" firstAttribute="firstBaseline" secondItem="Q7t-n3-UbM" secondAttribute="baseline" constant="8" symbolType="layoutAnchor" id="rmS-9D-kRH"/>
                 <constraint firstItem="Ts5-ss-4Si" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="th7-PP-dtA"/>
+                <constraint firstItem="Q7t-n3-UbM" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="wTa-sP-YdW"/>
                 <constraint firstItem="Ts5-ss-4Si" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="37:229" id="yG0-HQ-WJ1"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -102,6 +111,7 @@
                 <outlet property="currentTimeLabel" destination="mc1-L3-D0H" id="06h-8u-gJh"/>
                 <outlet property="durationLabel" destination="r0i-4i-91O" id="6Ho-4v-OkV"/>
                 <outlet property="enlargeShrinkButton" destination="pBQ-d3-u1j" id="60W-F8-BOj"/>
+                <outlet property="panGestureArea" destination="Q7t-n3-UbM" id="AHe-VY-MM9"/>
                 <outlet property="playPauseButton" destination="Twv-db-Pqn" id="kTO-V2-ua0"/>
                 <outlet property="playbackSlider" destination="Qm7-Vi-qOB" id="DX6-x1-8bn"/>
             </connections>

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MediaPlayer
 import AVKit
 
 class MainViewController: UIViewController {
@@ -22,14 +23,33 @@ class MainViewController: UIViewController {
     var showAnimation:UIViewPropertyAnimator!
     var hideAnimation:UIViewPropertyAnimator!
     var toBeHide:Bool = true
+    var panStartLocation:CGPoint!
+    var prePanLocation:CGPoint!
+    var currentPanLocation:CGPoint!
+    var volumeIndicatorViewHeightConstraint:NSLayoutConstraint!
+    let audioSession = AVAudioSession.sharedInstance()
+    var isPanDragging:Bool = false
     //MARK: Outlets
     @IBOutlet weak var containerView: UIView!
+    var volumeView: MPVolumeView = {
+        let view = MPVolumeView(frame: .zero)
+        view.isHidden = true
+        return view
+    }()
+    let volumeIndicatorView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.green
+        view.alpha = 0
+        return view
+    }()
     //MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPlayer()
         initailizeAnimation()
         setupGesture()
+        listenVolumeButton()
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -73,6 +93,15 @@ extension MainViewController: PlaybackControllerViewDelegate {
         playbackControllerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
         playbackControllerView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         playbackControllerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+        
+        self.view.addSubview(volumeView)
+        self.containerView.addSubview(volumeIndicatorView)
+        volumeIndicatorView.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor).isActive = true
+        volumeIndicatorView.widthAnchor.constraint(equalTo: self.containerView.widthAnchor, multiplier: 0.5).isActive = true
+        volumeIndicatorView.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor).isActive = true
+        let currentVolume = AVAudioSession.sharedInstance().outputVolume
+        volumeIndicatorViewHeightConstraint = volumeIndicatorView.heightAnchor.constraint(equalToConstant: CGFloat(currentVolume) * self.containerView.frame.height)
+        volumeIndicatorViewHeightConstraint.isActive = true
     }
     
     func playbackControllerView(valueDidChange slider: UISlider) {
@@ -105,14 +134,30 @@ extension MainViewController: PlaybackControllerViewDelegate {
 }
 //MARK:- KVO
 extension MainViewController {
+    func listenVolumeButton() {
+        do {
+            try audioSession.setActive(true)
+        } catch {
+            print("some error")
+        }
+        audioSession.addObserver(self, forKeyPath: "outputVolume", options: NSKeyValueObservingOptions.new, context: nil)
+    }
+    
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         // Only handle observations for the playerItemContext
-        guard context == &playerItemContext else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
         
-        if keyPath == #keyPath(AVPlayerItem.status) {
+        if keyPath == "outputVolume" && !isPanDragging{
+            print("Device Volume Changed by Button")
+            volumeIndicatorViewHeightConstraint.constant = CGFloat(audioSession.outputVolume) * containerView.frame.height
+            self.volumeIndicatorView.alpha = 0.5
+            UIView.animate(withDuration: 0.5) {
+                self.volumeIndicatorView.alpha = 0
+            }
+        }else if keyPath == #keyPath(AVPlayerItem.status){
+            guard context == &playerItemContext else {
+                super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+                return
+            }
             let status: AVPlayerItemStatus
             if let statusNumber = change?[.newKey] as? NSNumber {
                 status = AVPlayerItemStatus(rawValue: statusNumber.intValue)!

@@ -16,6 +16,7 @@ protocol PlaybackControllerViewDelegate: class {
 
 class PlaybackControllerView: UIView {
     //MARK: Outlets
+    @IBOutlet weak var panGestureArea: UIView!
     @IBOutlet weak var playPauseButton: UIButton! {
         didSet{
             playPauseButton.setImage(#imageLiteral(resourceName: "play") , for: .normal)
