@@ -156,6 +156,12 @@ extension MainViewController: PlaybackControllerViewDelegate {
             player.pause()
         }
     }
+    
+    func playbackControllerView(seekTime time: Double) {
+        let timeScale = CMTimeScale(NSEC_PER_SEC)
+        let seekTime = CMTime(seconds: time, preferredTimescale: timeScale)
+        player.seek(to: CMTimeAdd(player.currentTime(), seekTime))
+    }
 }
 //MARK:- KVO
 extension MainViewController {

@@ -12,6 +12,7 @@ import AVKit
 protocol PlaybackControllerViewDelegate: class {
     func playbackControllerView(toBePlay: Bool)
     func playbackControllerView(valueDidChange slider: UISlider)
+    func playbackControllerView(seekTime time : Double)
 }
 
 class PlaybackControllerView: UIView {
@@ -60,6 +61,9 @@ class PlaybackControllerView: UIView {
         }
     }
     //MARK: IBAction
+    @IBAction func handleRewind(_ sender: Any) {
+        delegate?.playbackControllerView(seekTime: -10)
+    }
     @objc func sliderValueChanged(_ sender: UISlider) {
         delegate?.playbackControllerView(valueDidChange: sender)
     }
