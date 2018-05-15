@@ -36,6 +36,16 @@ extension MainViewController {
             }
         }else if gesture.state == .changed {
             currentPanLocation = gesture.location(in: self.playbackControllerView.panGestureArea)
+            let vel = gesture.velocity(in: self.playbackControllerView.panGestureArea)
+            if vel.x > 0 {
+                print("Right")
+            }else if vel.x < 0 {
+                print("Left")
+            }else if vel.y > 0 {
+                print("Down")
+            }else if vel.y < 0 {
+                print("Up")
+            }
             let diff = currentPanLocation.y - prePanLocation.y
             prePanLocation = currentPanLocation
             if panStartLocation.x < self.containerView.frame.width / 2 {
