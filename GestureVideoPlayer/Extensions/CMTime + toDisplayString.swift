@@ -21,4 +21,18 @@ extension CMTime {
             return String(format: "%02d:%02d", arguments: [minute, seconds])
         }
     }
+    
+    func toCMTimeInteger()->Int {
+        let duration = Int(CMTimeGetSeconds(self))
+        return duration
+    }
+    
+    static func updatePanGestureSeekTimeLabel(captured:CMTime, time: Int)->String{
+        let capturedTime = captured.toCMTimeInteger()
+        if capturedTime + time >= 0 {
+            return String.init(format: "%02d : %02d", arguments: [(capturedTime + time) / 60, (capturedTime + time)%60])
+        }else{
+            return "00 : 00"
+        }
+    }
 }
