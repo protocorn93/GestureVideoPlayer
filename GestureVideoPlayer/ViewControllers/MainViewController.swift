@@ -30,6 +30,9 @@ class MainViewController: UIViewController {
     var brightnessIndicatorViewHeightConstraint:NSLayoutConstraint!
     let audioSession = AVAudioSession.sharedInstance()
     var isPanDragging:Bool = false
+    var timeToSeekByPanGesture:Int!
+    var capturedTime:CMTime!
+    var panDirection:PanDirection?
     //MARK: Outlets
     @IBOutlet weak var containerView: UIView!
     var panGestureArea: UIView = {
@@ -57,6 +60,15 @@ class MainViewController: UIViewController {
         view.alpha = 0
         return view
     }()
+    let timeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 25)
+        label.textAlignment = .center
+        label.textColor = .green
+        label.text = "00:00"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     //MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,8 +79,18 @@ class MainViewController: UIViewController {
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        playerLayer.frame = containerView.frame // because sublayers were not resizing autumatically
+        playerLayer.frame = containerView.bounds // because sublayers were not resizing autumatically
         panGestureArea.frame = playbackControllerView.panGestureArea.frame
+    }
+    //MARK: Orientation
+    override var shouldAutorotate: Bool {
+        return true
+    }
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return UIInterfaceOrientation.landscapeLeft
+    }
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.landscape
     }
     //MARK: AVPlayer
     fileprivate func setupPlayer(){
@@ -78,13 +100,11 @@ class MainViewController: UIViewController {
         //observce play item status
         playerItem.addObserver(self,forKeyPath: #keyPath(AVPlayerItem.status), options: [.old, .new],context: &playerItemContext)
         player = AVPlayer(playerItem: playerItem)
-        player.automaticallyWaitsToMinimizeStalling = false
         playerLayer = AVPlayerLayer(player: player)
-        playerLayer.videoGravity = .resize
+        playerLayer.videoGravity = .resizeAspectFill
         containerView.layer.addSublayer(playerLayer)
-
         //setup Playback Controller view
-        setupPlaybackControllerView()
+        setupView()
         //observe playback timeline
         observeCurrentPlaybackTime()
     }
@@ -99,7 +119,7 @@ class MainViewController: UIViewController {
 }
 //MARK:- PlaybackControllerViewDelegate
 extension MainViewController: PlaybackControllerViewDelegate {
-    fileprivate func setupPlaybackControllerView(){
+    fileprivate func setupView(){
         self.containerView.addSubview(panGestureArea)
         //Setup PlaybackControllerView
         playbackControllerView.delegate = self
@@ -109,23 +129,25 @@ extension MainViewController: PlaybackControllerViewDelegate {
         playbackControllerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
         playbackControllerView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
         playbackControllerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-        
-        self.view.addSubview(volumeView)
-        self.containerView.addSubview(volumeIndicatorView)
+        //Setup Views
+        self.view.addSubview(volumeView) // VolumeView
+        self.containerView.addSubview(volumeIndicatorView) // Volume IndicatorView
         volumeIndicatorView.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor).isActive = true
         volumeIndicatorView.widthAnchor.constraint(equalTo: self.containerView.widthAnchor, multiplier: 0.5).isActive = true
         volumeIndicatorView.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor).isActive = true
         let currentVolume = audioSession.outputVolume
         volumeIndicatorViewHeightConstraint = volumeIndicatorView.heightAnchor.constraint(equalToConstant: CGFloat(currentVolume) * self.containerView.frame.height)
         volumeIndicatorViewHeightConstraint.isActive = true
-        
-        self.containerView.addSubview(brightnessIndicatorView)
+        self.containerView.addSubview(brightnessIndicatorView) // Brightness IndicatorView
         brightnessIndicatorView.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor).isActive = true
         brightnessIndicatorView.widthAnchor.constraint(equalTo: self.containerView.widthAnchor, multiplier: 0.5).isActive = true
         brightnessIndicatorView.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor).isActive = true
-        
         brightnessIndicatorViewHeightConstraint = brightnessIndicatorView.heightAnchor.constraint(equalToConstant: UIScreen.main.brightness * self.containerView.frame.height)
         brightnessIndicatorViewHeightConstraint.isActive = true
+        self.containerView.addSubview(timeLabel) // Time Label
+        timeLabel.centerYAnchor.constraint(equalTo: self.containerView.centerYAnchor).isActive = true
+        timeLabel.centerXAnchor.constraint(equalTo: self.containerView.centerXAnchor).isActive = true
+        timeLabel.isHidden = true
     }
     
     func playbackControllerView(valueDidChange slider: UISlider) {
@@ -158,6 +180,9 @@ extension MainViewController: PlaybackControllerViewDelegate {
     }
     
     func playbackControllerView(seekTime time: Double) {
+        hideAnimation.stopAnimation(true)
+        initailizeAnimation()
+        showAnimation.startAnimation()
         let timeScale = CMTimeScale(NSEC_PER_SEC)
         let seekTime = CMTime(seconds: time, preferredTimescale: timeScale)
         player.seek(to: CMTimeAdd(player.currentTime(), seekTime))
